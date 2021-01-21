@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+// hook do useState;
+import React, { useState } from 'react';
 
 function App() {
+  // useState retorna um array,
+  // na 1º posicao (const [tech, setTech] = "tech") retorna o estado em si
+  // na 2º posicao ((const [tech, setTech]) = "setTech") é uma funcao que serve para atualizar as informacoes do estado
+  const [tech, setTech] = useState(['ReactJS', 'React Native']);
+  const [newTech, setNewTech] = useState('');
+
+  function handleAdd() {
+    setTech([...tech, newTech]);
+    setNewTech('');
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <ul>
+        {tech.map((t) => (
+          <li key={t}>{t}</li>
+        ))}
+      </ul>
+      <input value={newTech} onChange={(e) => setNewTech(e.target.value)} />
+      <button type="button" onClick={handleAdd}>
+        Atualizar
+      </button>
+    </>
   );
 }
 
