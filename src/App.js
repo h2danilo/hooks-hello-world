@@ -1,7 +1,8 @@
 // hook do useState;
 // hook useEffect => basicamente sobrepoe os metodos dos ciclos de vida que tinha na aplicacao. (componentDidMount(), componentdidUpdate(), componentWillUnmount())
 // hook useMemo => importante utilizar qdo nao desejar chamar algo todas as vezes que renderize a tela, ex. algum calculo, ou algo complexo,
-import React, { useState, useEffect, useMemo } from 'react';
+// useCallback => como se fosse useMemo, porém, ao inves de retornar um unico valor retorna uma funcao.
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 
 function App() {
   // useState retorna um array,
@@ -10,10 +11,16 @@ function App() {
   const [tech, setTech] = useState([]);
   const [newTech, setNewTech] = useState('');
 
-  function handleAdd() {
+  /* function handleAdd() {
     setTech([...tech, newTech]);
     setNewTech('');
-  }
+  } */
+  // da forma acima toda vez que altera alguma variavel (tech, newTech), a function é montada, gastando processamento do JS.
+  // para evitar isso utiliza-se o useCallback, conforme abaixo:
+  const handleAdd = useCallback(() => {
+    setTech([...tech, newTech]);
+    setNewTech('');
+  }, [tech, newTech]);
 
   // se desejar que o hook execute apenas uma vez, somente qdo componente montar em tela
   // entao cria-se um novo useEffect(), e no 2º param passa um array vazio, assim como nao tem nenhuma dependencia (nao fica monitorando nenhuma variavel)
