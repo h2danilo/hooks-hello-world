@@ -1,6 +1,7 @@
 // hook do useState;
 // hook useEffect => basicamente sobrepoe os metodos dos ciclos de vida que tinha na aplicacao. (componentDidMount(), componentdidUpdate(), componentWillUnmount())
-import React, { useState, useEffect } from 'react';
+// hook useMemo => importante utilizar qdo nao desejar chamar algo todas as vezes que renderize a tela, ex. algum calculo, ou algo complexo,
+import React, { useState, useEffect, useMemo } from 'react';
 
 function App() {
   // useState retorna um array,
@@ -32,6 +33,9 @@ function App() {
     localStorage.setItem('tech', JSON.stringify(tech));
   }, [tech]);
 
+  //nesse cenario soh irá verificar tamanho do array, qdo variavel tech atualizar.
+  const techSize = useMemo(() => tech.length, [tech]);
+
   return (
     <>
       <ul>
@@ -39,6 +43,12 @@ function App() {
           <li key={t}>{t}</li>
         ))}
       </ul>
+      {/* Cenario abaixo o tech.length é executado toda vez que a tela renderiza, ou seja, toda vez que atualiza qq variavel da tela */}
+      <strong>Você possui {tech.length} tecnologia</strong>
+      <br />
+      {/* nesse cenario resultado é o mesmo do acima, porém, evita da variavel ficar atualizando cada vez que tela renderiza, só vai atualizar qdo tiver alteracao na variavel informada no memo */}
+      <strong>Você possui {techSize} tecnologia</strong>
+      <br />
       <input value={newTech} onChange={(e) => setNewTech(e.target.value)} />
       <button type="button" onClick={handleAdd}>
         Atualizar
